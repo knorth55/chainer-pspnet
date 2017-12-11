@@ -414,10 +414,10 @@ class PSPNet(chainer.Chain):
             count = np.zeros((ori_rows, ori_cols))
             pred = np.zeros((1, self.n_class, ori_rows, ori_cols))
             stride_rate = 2 / 3.
-            stride = (ceil(self.input_size[0] * stride_rate),
-                      ceil(self.input_size[1] * stride_rate))
-            hh = ceil((ori_rows - self.input_size[0]) / stride[0]) + 1
-            ww = ceil((ori_cols - self.input_size[1]) / stride[1]) + 1
+            stride = (int(ceil(self.input_size[0] * stride_rate)),
+                      int(ceil(self.input_size[1] * stride_rate)))
+            hh = int(ceil((ori_rows - self.input_size[0]) / stride[0]) + 1)
+            ww = int(ceil((ori_cols - self.input_size[1]) / stride[1]) + 1)
             for yy in six.moves.xrange(hh):
                 for xx in six.moves.xrange(ww):
                     sy, sx = yy * stride[0], xx * stride[1]
