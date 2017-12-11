@@ -10,3 +10,7 @@ from datasets.cityscapes.cityscapes_utils import cityscapes_label_names  # NOQA
 from datasets.cityscapes.cityscapes_utils import cityscapes_label_colors  # NOQA
 
 from datasets.voc.voc_semantic_segmentation_dataset import VOCSemanticSegmentationDataset  # NOQA
+
+from datasets.ade20k.ade20k_utils import ade20k2style_transfer  # NOQA
+from datasets.ade20k.ade20k_utils import style_transfer_colors  # NOQA
+from datasets.ade20k.ade20k_utils import style_transfer_label_names  # NOQA
