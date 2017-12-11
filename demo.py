@@ -15,10 +15,13 @@ from chainercv.datasets import voc_semantic_segmentation_label_names
 from chainercv.utils import read_image
 from chainercv.visualizations import vis_image
 from chainercv.visualizations import vis_semantic_segmentation
+from datasets import ade20k2style_transfer
 from datasets import ade20k_label_colors
 from datasets import ade20k_label_names
 from datasets import cityscapes_label_colors
 from datasets import cityscapes_label_names
+from datasets import style_transfer_colors
+from datasets import style_transfer_label_names
 from pspnet import PSPNet
 
 if __name__ == '__main__':
@@ -27,8 +30,9 @@ if __name__ == '__main__':
     parser.add_argument('--gpu', '-g', type=int, default=-1)
     parser.add_argument('--scales', '-s', type=float, nargs='*', default=None)
     parser.add_argument('--out_dir', '-o', type=str, default='.')
-    parser.add_argument('--model', '-m', type=str,
-                        choices=['voc2012', 'cityscapes', 'ade20k'])
+    parser.add_argument(
+        '--model', '-m', type=str,
+        choices=['voc2012', 'cityscapes', 'ade20k', 'styletransfer'])
     args = parser.parse_args()
 
     chainer.config.train = False
@@ -45,6 +49,10 @@ if __name__ == '__main__':
         model = PSPNet(pretrained_model='ade20k')
         labels = ade20k_label_names
         colors = ade20k_label_colors
+    elif args.model == 'styletransfer':
+        model = PSPNet(pretrained_model='ade20k')
+        labels = style_transfer_label_names
+        colors = style_transfer_colors
 
     if args.gpu >= 0:
         chainer.cuda.get_device_from_id(args.gpu).use()
@@ -55,6 +63,8 @@ if __name__ == '__main__':
 
     # Save the result image
     ax = vis_image(img)
+    if args.model == 'styletransfer':
+        pred = ade20k2style_transfer(pred)
     _, legend_handles = vis_semantic_segmentation(
         pred, labels, colors, alpha=1.0, ax=ax)
     ax.legend(handles=legend_handles, bbox_to_anchor=(1.05, 1), loc=2,
